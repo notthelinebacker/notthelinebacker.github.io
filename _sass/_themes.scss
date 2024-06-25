@@ -67,7 +67,7 @@
 
 html[data-theme="dark"] {
   --global-bg-color: #{$dark-purple-color};
-  --global-code-bg-color: #{$code-bg-color-dark};
+  --global-code-bg-color: #{$dark-purple-color-light};
   --global-text-color: #{$white-color};
   --global-text-color-light: #{$grey-color};
   --global-theme-color: #{$pale-green-color};
