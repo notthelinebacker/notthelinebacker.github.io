@@ -5,7 +5,7 @@ description: a project with a background image and giscus comments
 img: assets/img/3.jpg
 importance: 2
 category: work
-giscus_comments: true
+giscus_comments: false
 ---
 <section id="user">
     <section>
@@ -105,120 +105,120 @@ giscus_comments: true
     }
     window.onload = loadCoeff;
   </script>
-  <section id="result">
-    <table>
-      <tr>
-        <th>YR</th>
-        <th>G</th>
-        <th>CMP</th>
-        <th>ATT</th>
-        <th>CMP%</th>
-        <th>YDS</th>
-        <th>Y/A</th>
-        <th>AY/A</th>
-        <th>Y/C</th>
-        <th>Y/G</th>
-        <th>TD</th>
-        <th>TD%</th>
-        <th>INT</th>
-        <th>INT%</th>
-        <th>RATE</th>
-      </tr>
-      <tr>
-        <td>
-          <p id="realYear">
-        </td>
-        <td>
-          <p id="game">
-        </td>
-        <td>
-          <p id="cmp">
-        </td>
-        <td>
-          <p id="att">
-        </td>
-        <td>
-          <p id="cmpPct">
-        </td>
-        <td>
-          <p id="yds">
-        </td>
-        <td>
-          <p id="yds/att">
-        </td>
-        <td>
-          <p id="realAYA">
-        </td>
-        <td>
-          <p id="yds/cmpR">
-        </td>
-        <td>
-          <p id="yds/gR">
-        </td>
-        <td>
-          <p id="td">
-        </td>
-        <td>
-          <p id="td/att">
-        </td>
-        <td>
-          <p id="cep">
-        </td>
-        <td>
-          <p id="cep/att">
-        </td>
-        <td>
-          <p id="realRate">
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <p id="hypYear">
-        </td>
-        <td>
-          <p id="hypGame">
-        </td>
-        <td>
-          <p id="hypCmp">
-        </td>
-        <td>
-          <p id="hypAtt">
-        </td>
-        <td>
-          <p id="hypCmpPct">
-        </td>
-        <td>
-          <p id="hypYds">
-        </td>
-        <td>
-          <p id="hypYdsPA">
-        </td>
-        <td>
-          <p id="hypAYA">
-        </td>
-        <td>
-          <p id="yds/cmpH">
-        </td>
-        <td>
-          <p id="yds/gH">
-        </td>
-        <td>
-          <p id="hypTd">
-        </td>
-        <td>
-          <p id="hypTdPct">
-        </td>
-        <td>
-          <p id="hypCep">
-        </td>
-        <td>
-          <p id="hypCepPct">
-        </td>
-        <td>
-          <p id="hypRate">
-        </td>
-      </tr>
-  </section>
+<section id="result">
+<table>
+<tr>
+ <th>YR</th>
+ <th>G</th>
+ <th>CMP</th>
+ <th>ATT</th>
+ <th>CMP%</th>
+ <th>YDS</th>
+ <th>Y/A</th>
+ <th>AY/A</th>
+ <th>Y/C</th>
+ <th>Y/G</th>
+ <th>TD</th>
+ <th>TD%</th>
+ <th>INT</th>
+ <th>INT%</th>
+ <th>RATE</th>
+</tr>
+<tr>
+<td>
+ <p id="realYear">
+</td>
+<td>
+ <p id="game">
+</td>
+<td>
+ <p id="cmp">
+</td>
+<td>
+ <p id="att">
+</td>
+<td>
+ <p id="cmpPct">
+</td>
+<td>
+ <p id="yds">
+</td>
+<td>
+ <p id="yds/att">
+</td>
+<td>
+ <p id="realAYA">
+</td>
+<td>
+ <p id="yds/cmpR">
+</td>
+<td>
+ <p id="yds/gR">
+</td>
+<td>
+ <p id="td">
+</td>
+<td>
+ <p id="td/att">
+</td>
+<td>
+ <p id="cep">
+</td>
+<td>
+ <p id="cep/att">
+</td>
+<td>
+ <p id="realRate">
+</td>
+</tr>
+<tr>
+<td>
+ <p id="hypYear">
+</td>
+<td>
+ <p id="hypGame">
+</td>
+<td>
+ <p id="hypCmp">
+</td>
+<td>
+ <p id="hypAtt">
+</td>
+<td>
+ <p id="hypCmpPct">
+</td>
+<td>
+ <p id="hypYds">
+</td>
+<td>
+ <p id="hypYdsPA">
+</td>
+<td>
+ <p id="hypAYA">       
+</td>
+<td>
+ <p id="yds/cmpH">
+</td>
+<td>
+ <p id="yds/gH">
+</td>
+<td>
+ <p id="hypTd">
+</td> 
+<td>
+ <p id="hypTdPct">
+</td>
+<td>
+ <p id="hypCep">
+</td>
+<td>
+ <p id="hypCepPct">
+</td>
+<td>
+ <p id="hypRate">
+</td>
+</tr>
+</section>
 
 Every project has a beautiful feature showcase page.
 It's easy to include images in a flexible 3-column grid format.
