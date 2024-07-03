@@ -7,7 +7,20 @@ importance: 2
 category: work
 giscus_comments: false
 ---
-<section id="user">
+<head>
+  <style>
+    section#user {
+      display: flex;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <section id="user">
     <section>
       <div style="float:left;margin-right:5px;">
         <label for="original-year">Original Year</label>
@@ -52,173 +65,82 @@ giscus_comments: false
       </div>
     </section>
   </section>
+  <div id="result" class="hidden">
+    <table>
+      <thead>
+        <tr>
+          <th>YR</th>
+          <th>G</th>
+          <th>CMP</th>
+          <th>ATT</th>
+          <th>CMP%</th>
+          <th>YDS</th>
+          <th>Y/A</th>
+          <th>AY/A</th>
+          <th>Y/C</th>
+          <th>Y/G</th>
+          <th>TD</th>
+          <th>TD%</th>
+          <th>INT</th>
+          <th>INT%</th>
+          <th>RATE</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr id="realStats"></tr>
+        <tr id="hypStats"></tr>
+      </tbody>
+    </table>
+  </div>
   <script>
-    let coeff;
     function loadCoeff() {
-      return fetch('passer-rating.json')
+      return fetch('notthelinebacker.github.io/notthelinebacker.github.io/_projects/passer-rating.json')
         .then(response => response.json())
-        .then(data => {
-          coeff = data;
-        })
-        .catch(error => console.error('Error:', error));
+        .catch(error => {
+          console.error('Error:', error);
+          throw error;
+        });
     }
-    function calc() {
-      const realYear = String(document.getElementById('original-year').value); const hypYear = String(document.getElementById('converted-year').value); const hashYear = Number(realYear + hypYear);
-      const gameAdj = coeff[hashYear][0]; const cmpAdj = coeff[hashYear][1]; const tdAdj = coeff[hashYear][2];
-      const cepAdj = coeff[hashYear][3]; const ydsAdj = coeff[hashYear][4]; const PAttAdj = coeff[hashYear][5];
-      const game = Number(document.getElementById('games').value); const cmp = Number(document.getElementById('completions').value); const att = Number(document.getElementById('attempts').value);
-      const yds = Number(document.getElementById('yards').value); const td = Number(document.getElementById('touchdowns').value); const cep = Number(document.getElementById('interceptions').value);
-      const cmpPct = cmp / att;
-      const hypGame = game * gameAdj; const hypCmpPct = cmpPct * cmpAdj; const hypAtt = att * PAttAdj * gameAdj; const hypYdsPA = (yds / att) * ydsAdj; const hypTdPct = (td / att) * tdAdj;
-      const hypCepPct = (cep / att) * cepAdj; const hypCmp = hypCmpPct * hypAtt; const hypYds = hypYdsPA * hypAtt; const hypTd = hypTdPct * hypAtt; const hypCep = hypCepPct * hypAtt;
-      let prAR = ((cmp / att) - 0.3) * 5; if (prAR > 2.375) { prAR = 2.375; } else if (prAR < 0) { prAR = 0; }
-      let prBR = ((yds / att) - 3) * 0.25; if (prBR > 2.375) { prBR = 2.375; } else if (prBR < 0) { prBR = 0; }
-      let prCR = (td / att) * 20; if (prCR > 2.375) { prCR = 2.375; } else if (prCR < 0) { prCR = 0; }
-      let prDR = 2.375 - ((cep / att) * 25); if (prDR > 2.375) { prDR = 2.375; } else if (prDR < 0) { prDR = 0; }
-      let prAH = ((hypCmp / hypAtt) - 0.3) * 5; if (prAH > 2.375) { prAH = 2.375; } else if (prAH < 0) { prAH = 0; }
-      let prBH = ((hypYds / hypAtt) - 3) * 0.25; if (prBH > 2.375) { prBH = 2.375; } else if (prBH < 0) { prBH = 0; }
-      let prCH = (hypTd / hypAtt) * 20; if (prCH > 2.375) { prCH = 2.375; } else if (prCH < 0) { prCH = 0; }
-      let prDH = 2.375 - ((hypCep / hypAtt) * 25); if (prDH > 2.375) { prDH = 2.375; } else if (prDH < 0) { prDH = 0; }
-      const arrReal = [["realYear", realYear], ["game", game], ["cmp", cmp], ["att", att], ["cmpPct", (cmpPct * 100).toLocaleString("en-US", { maximumFractionDigits: 1, minimumFractionDigits: 1 })],
-      ["yds", yds], ["yds/att", (yds / att).toLocaleString("en-US", { maximumFractionDigits: 1, minimumFractionDigits: 1 })],
-      ["yds/cmpR", (yds / cmp).toLocaleString("en-US", { maximumFractionDigits: 1, minimumFractionDigits: 1 })],
-      ["yds/gR", (yds / game).toLocaleString("en-US", { maximumFractionDigits: 1, minimumFractionDigits: 1 })], ["td", td],
-      ["td/att", ((td / att) * 100).toLocaleString("en-US", { maximumFractionDigits: 1, minimumFractionDigits: 1 })], ["cep", cep],
-      ["cep/att", ((cep / att) * 100).toLocaleString("en-US", { maximumFractionDigits: 1, minimumFractionDigits: 1 })]];
-      for (i = 0; i < arrReal.length; i++) {
-        document.getElementById(arrReal[i][0]).innerHTML = arrReal[i][1];
+    async function calc() {
+      try {
+        let coeff = await loadCoeff();
+        const realYear = String(document.getElementById('original-year').value); const hypYear = String(document.getElementById('converted-year').value); const hashYear = Number(realYear + hypYear);
+        const gameAdj = coeff[hashYear][0]; const cmpAdj = coeff[hashYear][1]; const tdAdj = coeff[hashYear][2];
+        const cepAdj = coeff[hashYear][3]; const ydsAdj = coeff[hashYear][4]; const PAttAdj = coeff[hashYear][5];
+        const game = Number(document.getElementById('games').value); const cmp = Number(document.getElementById('completions').value); const att = Number(document.getElementById('attempts').value);
+        const yds = Number(document.getElementById('yards').value); const td = Number(document.getElementById('touchdowns').value); const cep = Number(document.getElementById('interceptions').value);
+        const cmpPct = cmp / att;
+        const hypGame = game * gameAdj; const hypCmpPct = cmpPct * cmpAdj; const hypAtt = att * PAttAdj * gameAdj; const hypYdsPA = (yds / att) * ydsAdj; const hypTdPct = (td / att) * tdAdj;
+        const hypCepPct = (cep / att) * cepAdj; const hypCmp = hypCmpPct * hypAtt; const hypYds = hypYdsPA * hypAtt; const hypTd = hypTdPct * hypAtt; const hypCep = hypCepPct * hypAtt;
+        let prAR = ((cmp / att) - 0.3) * 5; if (prAR > 2.375) { prAR = 2.375; } else if (prAR < 0) { prAR = 0; }
+        let prBR = ((yds / att) - 3) * 0.25; if (prBR > 2.375) { prBR = 2.375; } else if (prBR < 0) { prBR = 0; }
+        let prCR = (td / att) * 20; if (prCR > 2.375) { prCR = 2.375; } else if (prCR < 0) { prCR = 0; }
+        let prDR = 2.375 - ((cep / att) * 25); if (prDR > 2.375) { prDR = 2.375; } else if (prDR < 0) { prDR = 0; }
+        let prAH = ((hypCmp / hypAtt) - 0.3) * 5; if (prAH > 2.375) { prAH = 2.375; } else if (prAH < 0) { prAH = 0; }
+        let prBH = ((hypYds / hypAtt) - 3) * 0.25; if (prBH > 2.375) { prBH = 2.375; } else if (prBH < 0) { prBH = 0; }
+        let prCH = (hypTd / hypAtt) * 20; if (prCH > 2.375) { prCH = 2.375; } else if (prCH < 0) { prCH = 0; }
+        let prDH = 2.375 - ((hypCep / hypAtt) * 25); if (prDH > 2.375) { prDH = 2.375; } else if (prDH < 0) { prDH = 0; }
+        const arrReal = [realYear, game, cmp, att, (cmpPct * 100).toFixed(1), yds, (yds / att).toFixed(1),
+          ((yds + (20 * td) - (45 * cep)) / att).toFixed(1), (yds / cmp).toFixed(1), (yds / game).toFixed(1), td,
+          ((td / att) * 100).toFixed(1), cep, ((cep / att) * 100).toFixed(1), (((prAR + prBR + prCR + prDR) / 6) * 100).toFixed(1)];
+        const arrHyp = [hypYear, hypGame.toFixed(0), hypCmp.toFixed(0), hypAtt.toFixed(0),
+          (hypCmpPct * 100).toFixed(1), hypYds.toFixed(0), hypYdsPA.toFixed(1), ((hypYds + (20 * hypTd) - (45 * hypCep)) / hypAtt).toFixed(1),
+          (hypYds / hypCmp).toFixed(1), (hypYds / hypGame).toFixed(1), hypTd.toFixed(0), (hypTdPct * 100).toFixed(1), hypCep.toFixed(0),
+          (hypCepPct * 100).toFixed(1), (((prAH + prBH + prCH + prDH) / 6) * 100).toFixed(1)];
+        popRow('realStats', arrReal);
+        popRow('hypStats', arrHyp);
+        document.getElementById('result').classList.remove('hidden');
       }
-      document.getElementById("realAYA").innerHTML = ((yds + (20 * td) - (45 * cep)) / att).toLocaleString("en-US", { maximumFractionDigits: 1, minimumFractionDigits: 1 });
-      document.getElementById("realRate").innerHTML = (((prAR + prBR + prCR + prDR) / 6) * 100).toLocaleString("en-US", { maximumFractionDigits: 1, minimumFractionDigits: 1 });
-      const arrHyp = [["hypYear", hypYear], ["hypGame", parseInt(hypGame + 0.5)], ["hypCmp", parseInt(hypCmp + 0.5)], ["hypAtt", parseInt(hypAtt + 0.5)],
-      ["hypCmpPct", (hypCmpPct * 100).toLocaleString("en-US", { maximumFractionDigits: 1, minimumFractionDigits: 1 })],
-      ["hypYds", parseInt(hypYds + 0.5)], ["hypYdsPA", (hypYdsPA).toLocaleString("en-US", { maximumFractionDigits: 1, minimumFractionDigits: 1 })],
-      ["yds/cmpH", (hypYds / hypCmp).toLocaleString("en-US", { maximumFractionDigits: 1, minimumFractionDigits: 1 })],
-      ["yds/gH", (hypYds / hypGame).toLocaleString("en-US", { maximumFractionDigits: 1, minimumFractionDigits: 1 })], ["hypTd", parseInt(hypTd + 0.5)],
-      ["hypTdPct", (hypTdPct * 100).toLocaleString("en-US", { maximumFractionDigits: 1, minimumFractionDigits: 1 })], ["hypCep", parseInt(hypCep + 0.5)],
-      ["hypCepPct", (hypCepPct * 100).toLocaleString("en-US", { maximumFractionDigits: 1, minimumFractionDigits: 1 })]];
-      for (i = 0; i < arrHyp.length; i++) {
-        document.getElementById(arrHyp[i][0]).innerHTML = arrHyp[i][1];
+      catch (error) {
+        console.error('Error: ', error);
       }
-      document.getElementById("hypAYA").innerHTML = ((hypYds + (20 * hypTd) - (45 * hypCep)) / hypAtt).toLocaleString("en-US", { maximumFractionDigits: 1, minimumFractionDigits: 1 });
-      document.getElementById("hypRate").innerHTML = (((prAH + prBH + prCH + prDH) / 6) * 100).toLocaleString("en-US", { maximumFractionDigits: 1, minimumFractionDigits: 1 });
     }
-    window.onload = loadCoeff;
+    function popRow(rowId, arr) {
+      const row = document.getElementById(rowId);
+      row.innerHTML = arr.map(i => `<td>${i}</td>`).join('');
+    }
   </script>
-<section id="result">
-<table>
-<tr>
- <th>YR</th>
- <th>G</th>
- <th>CMP</th>
- <th>ATT</th>
- <th>CMP%</th>
- <th>YDS</th>
- <th>Y/A</th>
- <th>AY/A</th>
- <th>Y/C</th>
- <th>Y/G</th>
- <th>TD</th>
- <th>TD%</th>
- <th>INT</th>
- <th>INT%</th>
- <th>RATE</th>
-</tr>
-<tr>
-<td>
- <p id="realYear">
-</td>
-<td>
- <p id="game">
-</td>
-<td>
- <p id="cmp">
-</td>
-<td>
- <p id="att">
-</td>
-<td>
- <p id="cmpPct">
-</td>
-<td>
- <p id="yds">
-</td>
-<td>
- <p id="yds/att">
-</td>
-<td>
- <p id="realAYA">
-</td>
-<td>
- <p id="yds/cmpR">
-</td>
-<td>
- <p id="yds/gR">
-</td>
-<td>
- <p id="td">
-</td>
-<td>
- <p id="td/att">
-</td>
-<td>
- <p id="cep">
-</td>
-<td>
- <p id="cep/att">
-</td>
-<td>
- <p id="realRate">
-</td>
-</tr>
-<tr>
-<td>
- <p id="hypYear">
-</td>
-<td>
- <p id="hypGame">
-</td>
-<td>
- <p id="hypCmp">
-</td>
-<td>
- <p id="hypAtt">
-</td>
-<td>
- <p id="hypCmpPct">
-</td>
-<td>
- <p id="hypYds">
-</td>
-<td>
- <p id="hypYdsPA">
-</td>
-<td>
- <p id="hypAYA">       
-</td>
-<td>
- <p id="yds/cmpH">
-</td>
-<td>
- <p id="yds/gH">
-</td>
-<td>
- <p id="hypTd">
-</td> 
-<td>
- <p id="hypTdPct">
-</td>
-<td>
- <p id="hypCep">
-</td>
-<td>
- <p id="hypCepPct">
-</td>
-<td>
- <p id="hypRate">
-</td>
-</tr>
-</section>
+</body>
 
 Every project has a beautiful feature showcase page.
 It's easy to include images in a flexible 3-column grid format.
