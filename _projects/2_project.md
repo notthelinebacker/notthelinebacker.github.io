@@ -94,7 +94,7 @@ giscus_comments: false
   </div>
   <script>
     function loadCoeff() {
-      return fetch('notthelinebacker.github.io/notthelinebacker.github.io/_projects/passer-rating.json')
+      return fetch('/assets/json/passer-rating.json')
         .then(response => response.json())
         .catch(error => {
           console.error('Error:', error);
